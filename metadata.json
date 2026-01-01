@@ -1,0 +1,8 @@
+
+{
+  "name": "EthioSafeguard: AID Truck Tracking System",
+  "description": "A comprehensive humanitarian aid logistics platform connecting truck drivers and aid organizations with real-time tracking, task management, and administrative oversight.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
