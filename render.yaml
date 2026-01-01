@@ -1,0 +1,21 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: ethio-safeguard-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: MONGO_URI
+        sync: false # You will need to provide your MongoDB Atlas URI in the Render dashboard
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: ethio-redis
+          property: connectionString
+
+  # Redis Instance
+  - type: redis
+    name: ethio-redis
+    ipAllowList: [] # Only allow internal connections
