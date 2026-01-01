@@ -1,6 +1,6 @@
 
 import mongoose, { Schema, Document } from 'mongoose';
-import { UserRole, RegistrationStatus, TruckStatus } from '../../types';
+import { UserRole, RegistrationStatus, TruckStatus } from '../types';
 
 export interface IUser extends Document {
     name: string;
