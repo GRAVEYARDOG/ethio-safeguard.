@@ -1,9 +1,19 @@
 import { createClient } from 'redis';
 
-const redisUrl = process.env.REDIS_URL || `redis://${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || '6379'}`;
+let redisUrl = process.env.REDIS_URL || `redis://${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || '6379'}`;
+
+// Auto-fix for Upstash/TLS: Upstash requires rediss:// for TLS
+if (redisUrl.includes('upstash.io') && !redisUrl.startsWith('rediss://')) {
+    redisUrl = redisUrl.replace('redis://', 'rediss://');
+}
 
 export const redisClient = createClient({
-    url: redisUrl
+    url: redisUrl,
+    socket: {
+        // If it's a secure connection, ensure we allow unauthorized for certain environments if needed, 
+        // but for Upstash default is usually fine.
+        tls: redisUrl.startsWith('rediss://')
+    }
 });
 
 export const redisSubscriber = redisClient.duplicate();
