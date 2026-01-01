@@ -15,7 +15,7 @@ const INITIAL_ADMIN: User = {
   status: RegistrationStatus.APPROVED
 };
 
-const API_URL = 'http://localhost:3000/api'; // Points to Nginx Load Balancer
+const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:3000/api';
 
 export const store = {
   // Now async

@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://localhost:3000'; // Points to Nginx Load Balancer // Make sure this matches backend port
+const URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const socket = io(URL, {
     autoConnect: false,
