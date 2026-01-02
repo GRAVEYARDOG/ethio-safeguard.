@@ -33,13 +33,13 @@ export const Footer: React.FC<FooterProps> = ({ onRegister, onLogin }) => {
             </p>
             <div className="flex gap-4">
               {[
-                { name: 'Twitter', url: 'https://twitter.com/WHO' },
-                { name: 'LinkedIn', url: 'https://www.linkedin.com/company/world-health-organization' },
-                { name: 'Github', url: 'https://github.com/WorldHealthOrganization' },
-                { name: 'Instagram', url: 'https://www.instagram.com/who/' }
+                { name: 'Twitter', url: 'https://twitter.com/WHO', icon: <ICONS.Twitter className="w-5 h-5" /> },
+                { name: 'LinkedIn', url: 'https://www.linkedin.com/company/world-health-organization', icon: <ICONS.LinkedIn className="w-5 h-5" /> },
+                { name: 'Github', url: 'https://github.com/WorldHealthOrganization', icon: <ICONS.Github className="w-5 h-5" /> },
+                { name: 'Instagram', url: 'https://www.instagram.com/who/', icon: <ICONS.Instagram className="w-5 h-5" /> }
               ].map((social) => (
                 <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white hover:-translate-y-1 transition-all duration-300">
-                  <span className="text-[10px] font-black uppercase tracking-tighter">{social.name[0]}</span>
+                  {social.icon}
                 </a>
               ))}
             </div>
