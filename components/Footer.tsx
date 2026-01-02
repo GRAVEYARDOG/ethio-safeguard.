@@ -40,25 +40,6 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-2">
-            <h4 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-8">Ecosystem</h4>
-            <ul className="space-y-4 text-slate-500 font-medium">
-              <li><a href="#network" className="hover:text-indigo-600 transition-colors">Route Planner</a></li>
-              <li><a href="#security" className="hover:text-indigo-600 transition-colors">Tactical Security</a></li>
-              <li><a href="#network" className="hover:text-indigo-600 transition-colors">Fleet Network</a></li>
-              <li><a href="#security" className="hover:text-indigo-600 transition-colors">Mission Hub</a></li>
-            </ul>
-          </div>
-
-          <div className="lg:col-span-5">
-            <h4 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-8">Resource Hub</h4>
-            <ul className="space-y-4 text-slate-500 font-medium">
-              <li><a href="#security" className="hover:text-indigo-600 transition-colors">Safety Guides</a></li>
-              <li><a href="#network" className="hover:text-indigo-600 transition-colors">Support Portal</a></li>
-              <li><a href="#security" className="hover:text-indigo-600 transition-colors">Driver Academy</a></li>
-              <li><a href="#network" className="hover:text-indigo-600 transition-colors">API Docs</a></li>
-            </ul>
-          </div>
         </div>
 
         <div className="pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
