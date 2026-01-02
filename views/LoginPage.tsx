@@ -20,6 +20,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ role, onBack, onSuccess })
     e.preventDefault();
     setLoading(true);
     setError('');
+    // Unified Email Validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email format.');
+      setLoading(false);
+      return;
+    }
 
     // Async login via MongoDB
     setTimeout(async () => {

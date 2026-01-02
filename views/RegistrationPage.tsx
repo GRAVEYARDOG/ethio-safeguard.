@@ -19,7 +19,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [driverData, setDriverData] = useState({
     driverLicense: '',
@@ -37,8 +40,53 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
     headquarters: '',
   });
 
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    // 1. Letters/Name Validation
+    const nameTrimmed = commonData.name.trim().replace(/\s+/g, ' ');
+    const nameWords = nameTrimmed.split(' ');
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    if (!nameRegex.test(nameTrimmed)) {
+      newErrors.name = 'Numbers and special characters are not allowed in names.';
+    } else if (nameWords.length < 2 || nameWords.length > 4) {
+      newErrors.name = 'Name must be between 2 and 4 words.';
+    } else if (commonData.name !== nameTrimmed) {
+      newErrors.name = 'Multiple spaces are not allowed.';
+    }
+
+    // 2. Email Validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(commonData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+    }
+
+    // 3. Password Validation
+    if (commonData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters.';
+    } else if (commonData.password !== commonData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match.';
+    }
+
+    // 4. Numeric Validation
+    if (role === 'DRIVER') {
+      const exp = parseInt(driverData.experienceYears);
+      if (isNaN(exp) || exp < 0) {
+        newErrors.experienceYears = 'Experience must be a positive number.';
+      }
+      if (driverData.experienceYears.includes(' ')) {
+        newErrors.experienceYears = 'Spaces are not allowed in numeric fields.';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     setLoading(true);
 
     setTimeout(async () => {
@@ -179,9 +227,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                     type="text"
                     value={commonData.name}
                     onChange={e => setCommonData({ ...commonData, name: e.target.value })}
-                    className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                    className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.name ? 'border-red-500' : 'border-slate-100'}`}
                     placeholder="e.g. Abebe Bikila"
                   />
+                  {errors.name && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.name}</p>}
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Secure Email Address</label>
@@ -190,20 +239,34 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                     type="email"
                     value={commonData.email}
                     onChange={e => setCommonData({ ...commonData, email: e.target.value })}
-                    className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                    className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.email ? 'border-red-500' : 'border-slate-100'}`}
                     placeholder="abebe@organization.com"
                   />
+                  {errors.email && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.email}</p>}
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-2 sm:col-span-1">
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Access Password</label>
                   <input
                     required
                     type="password"
                     value={commonData.password}
                     onChange={e => setCommonData({ ...commonData, password: e.target.value })}
-                    className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                    className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.password ? 'border-red-500' : 'border-slate-100'}`}
                     placeholder="••••••••••••"
                   />
+                  {errors.password && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.password}</p>}
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Confirm Password</label>
+                  <input
+                    required
+                    type="password"
+                    value={commonData.confirmPassword}
+                    onChange={e => setCommonData({ ...commonData, confirmPassword: e.target.value })}
+                    className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.confirmPassword ? 'border-red-500' : 'border-slate-100'}`}
+                    placeholder="••••••••••••"
+                  />
+                  {errors.confirmPassword && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.confirmPassword}</p>}
                 </div>
               </div>
             </div>
@@ -271,9 +334,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="number"
                       value={driverData.experienceYears}
                       onChange={e => setDriverData({ ...driverData, experienceYears: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.experienceYears ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="e.g. 5"
                     />
+                    {errors.experienceYears && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.experienceYears}</p>}
                   </div>
                 </div>
               </div>

@@ -26,6 +26,7 @@ export interface User {
   email: string;
   role: UserRole;
   status: RegistrationStatus;
+  password?: string;
   truckDetails?: {
     licensePlate: string;
     model: string;

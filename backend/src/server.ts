@@ -34,10 +34,43 @@ app.post('/api/register', async (req, res) => {
     try {
         console.log('--- REGISTER REQUEST ---');
         console.log('Body:', JSON.stringify(req.body, null, 2));
-        const existing = await User.findOne({ email: req.body.email });
+
+        const { name, email, password } = req.body;
+
+        // SERVER-SIDE VALIDATION
+        // 1. Sanitize & Validate Name
+        const nameTrimmed = name?.trim().replace(/\s+/g, ' ');
+        const nameWords = nameTrimmed?.split(' ') || [];
+        const nameRegex = /^[A-Za-z\s]+$/;
+
+        if (!nameTrimmed || !nameRegex.test(nameTrimmed) || nameWords.length < 2 || nameWords.length > 4) {
+            return res.status(400).json({ error: 'Strict Validation: Invalid name format. Use 2-4 words, letters only.' });
+        }
+
+        if (name !== nameTrimmed) {
+            return res.status(400).json({ error: 'Strict Validation: Multiple spaces detected in name.' });
+        }
+
+        // 2. Validate Email
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Strict Validation: Invalid email format.' });
+        }
+
+        // 3. Password length check
+        if (!password || password.length < 8) {
+            return res.status(400).json({ error: 'Strict Validation: Password must be at least 8 characters.' });
+        }
+
+        const existing = await User.findOne({ email });
         if (existing) {
             return res.status(400).json({ error: 'Identity already registered in system.' });
         }
+
+        // Sanitize before save
+        req.body.name = nameTrimmed;
+        req.body.email = email.trim().toLowerCase();
+
         const user = await User.create(req.body);
         res.json(user);
     } catch (err) {
