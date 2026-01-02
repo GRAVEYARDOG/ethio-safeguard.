@@ -136,9 +136,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
                   <h2 className="text-5xl font-extrabold text-slate-900 tracking-tight mb-8">Architected for <span className="text-indigo-600">Trust.</span></h2>
                   <p className="text-xl text-slate-500 font-medium leading-relaxed">We don't just track trucks; we secure the vital corridors that keep humanity moving forward through military-grade verification protocols.</p>
                 </div>
-                <button className="text-indigo-600 font-black text-sm uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all">
-                  Security Protocol <ICONS.ChevronRight className="w-5 h-5" />
-                </button>
               </div>
               <div className="grid md:grid-cols-3 gap-10 relative z-10">
                 {[
