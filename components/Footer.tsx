@@ -2,7 +2,12 @@
 import React from 'react';
 import { ICONS, APP_NAME } from '../constants';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onRegister?: () => void;
+  onLogin?: (role: any) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onRegister, onLogin }) => {
   return (
     <footer className="bg-white pt-24 pb-12 px-8 mt-auto border-t border-slate-100">
       <div className="max-w-7xl mx-auto">
@@ -15,8 +20,8 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-24">
-          <div className="lg:col-span-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
+          <div className="lg:col-span-6">
             <div className="flex items-center gap-3 mb-8 group cursor-pointer">
               <div className="p-2.5 bg-indigo-600 rounded-xl text-white shadow-lg group-hover:scale-110 transition-transform">
                 <ICONS.Shield className="w-6 h-6" />
@@ -40,6 +45,37 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
+          <div className="lg:col-span-6">
+            <h4 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-8">Quick Operations</h4>
+            <div className="grid grid-cols-2 gap-x-12 gap-y-4 text-slate-500 font-bold text-sm">
+              <a href="#network" className="hover:text-indigo-600 transition-colors">Network</a>
+              <a href="#security" className="hover:text-indigo-600 transition-colors">Security</a>
+              <button
+                onClick={() => onLogin?.('ADMIN')}
+                className="text-left hover:text-indigo-600 transition-colors"
+              >
+                Admin Hub
+              </button>
+              <button
+                onClick={onRegister}
+                className="text-left hover:text-indigo-600 transition-colors"
+              >
+                Join the Mission
+              </button>
+              <button
+                onClick={() => onLogin?.('DRIVER')}
+                className="text-left hover:text-indigo-600 transition-colors"
+              >
+                Driver Portal
+              </button>
+              <button
+                onClick={() => onLogin?.('SENDER')}
+                className="text-left hover:text-indigo-600 transition-colors"
+              >
+                Sender Portal
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">

@@ -193,7 +193,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
         </section>
       </main>
 
-      <Footer />
+      <Footer onRegister={onStartRegister} onLogin={onStartLogin} />
     </div>
   );
 };
