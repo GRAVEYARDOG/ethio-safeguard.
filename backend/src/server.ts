@@ -62,6 +62,35 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ error: 'Strict Validation: Password must be at least 8 characters.' });
         }
 
+        // 4. Role-Specific Section Validation
+        const { role, truckDetails, organizationDetails } = req.body;
+        const sectionRegex = /^[A-Za-z0-9\s-]+$/;
+        const multiSpaceRegex = /\s{2,}/;
+
+        if (role === 'DRIVER' && truckDetails) {
+            const { driverLicense, licensePlate, model } = truckDetails;
+            if (!driverLicense || !sectionRegex.test(driverLicense) || multiSpaceRegex.test(driverLicense)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid Driver License format.' });
+            }
+            if (!licensePlate || !sectionRegex.test(licensePlate) || multiSpaceRegex.test(licensePlate)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid License Plate format.' });
+            }
+            if (!model || !sectionRegex.test(model) || multiSpaceRegex.test(model)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid Truck Model format.' });
+            }
+        } else if (role === 'SENDER' && organizationDetails) {
+            const { name: orgName, regNumber, headquarters } = organizationDetails;
+            if (!orgName || !sectionRegex.test(orgName) || multiSpaceRegex.test(orgName)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid Organization Name format.' });
+            }
+            if (!regNumber || !sectionRegex.test(regNumber) || multiSpaceRegex.test(regNumber)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid Registration Number format.' });
+            }
+            if (!headquarters || !sectionRegex.test(headquarters) || multiSpaceRegex.test(headquarters)) {
+                return res.status(400).json({ error: 'Strict Validation: Invalid Headquarters format.' });
+            }
+        }
+
         const existing = await User.findOne({ email });
         if (existing) {
             return res.status(400).json({ error: 'Identity already registered in system.' });

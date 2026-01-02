@@ -69,14 +69,55 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
       newErrors.confirmPassword = 'Passwords do not match.';
     }
 
-    // 4. Numeric Validation
+    // 4. Role-Specific Section Validation
+    const sectionRegex = /^[A-Za-z0-9\s-]+$/;
+    const multiSpaceRegex = /\s{2,}/;
+
     if (role === 'DRIVER') {
+      // Experience Validation
       const exp = parseInt(driverData.experienceYears);
       if (isNaN(exp) || exp < 0) {
         newErrors.experienceYears = 'Experience must be a positive number.';
-      }
-      if (driverData.experienceYears.includes(' ')) {
+      } else if (driverData.experienceYears.includes(' ')) {
         newErrors.experienceYears = 'Spaces are not allowed in numeric fields.';
+      }
+
+      // Section Inputs Validation
+      if (!sectionRegex.test(driverData.driverLicense)) {
+        newErrors.driverLicense = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(driverData.driverLicense)) {
+        newErrors.driverLicense = 'Multiple spaces are not allowed.';
+      }
+
+      if (!sectionRegex.test(driverData.licensePlate)) {
+        newErrors.licensePlate = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(driverData.licensePlate)) {
+        newErrors.licensePlate = 'Multiple spaces are not allowed.';
+      }
+
+      if (!sectionRegex.test(driverData.truckModel)) {
+        newErrors.truckModel = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(driverData.truckModel)) {
+        newErrors.truckModel = 'Multiple spaces are not allowed.';
+      }
+    } else {
+      // SENDER Validation
+      if (!sectionRegex.test(senderData.orgName)) {
+        newErrors.orgName = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(senderData.orgName)) {
+        newErrors.orgName = 'Multiple spaces are not allowed.';
+      }
+
+      if (!sectionRegex.test(senderData.regNumber)) {
+        newErrors.regNumber = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(senderData.regNumber)) {
+        newErrors.regNumber = 'Multiple spaces are not allowed.';
+      }
+
+      if (!sectionRegex.test(senderData.headquarters)) {
+        newErrors.headquarters = 'Special characters are not allowed.';
+      } else if (multiSpaceRegex.test(senderData.headquarters)) {
+        newErrors.headquarters = 'Multiple spaces are not allowed.';
       }
     }
 
@@ -288,9 +329,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={driverData.driverLicense}
                       onChange={e => setDriverData({ ...driverData, driverLicense: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.driverLicense ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="e.g. DL-2024-8891"
                     />
+                    {errors.driverLicense && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.driverLicense}</p>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Truck Plate ID</label>
@@ -299,9 +341,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={driverData.licensePlate}
                       onChange={e => setDriverData({ ...driverData, licensePlate: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.licensePlate ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="ETH-AA-12345"
                     />
+                    {errors.licensePlate && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.licensePlate}</p>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Vehicle Model</label>
@@ -310,9 +353,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={driverData.truckModel}
                       onChange={e => setDriverData({ ...driverData, truckModel: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.truckModel ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="e.g. Isuzu Forward"
                     />
+                    {errors.truckModel && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.truckModel}</p>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Tonnage Capacity</label>
@@ -355,9 +399,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={senderData.orgName}
                       onChange={e => setSenderData({ ...senderData, orgName: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.orgName ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="e.g. World Health Aid Ethiopia"
                     />
+                    {errors.orgName && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.orgName}</p>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Registration ID</label>
@@ -366,9 +411,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={senderData.regNumber}
                       onChange={e => setSenderData({ ...senderData, regNumber: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.regNumber ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="NGO-REG-2024-X"
                     />
+                    {errors.regNumber && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.regNumber}</p>}
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Primary Sector</label>
@@ -390,9 +436,10 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
                       type="text"
                       value={senderData.headquarters}
                       onChange={e => setSenderData({ ...senderData, headquarters: e.target.value })}
-                      className="w-full px-8 py-5 bg-white border-2 border-slate-100 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm"
+                      className={`w-full px-8 py-5 bg-white border-2 rounded-2xl focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-600 outline-none transition-all font-bold text-slate-800 shadow-sm ${errors.headquarters ? 'border-red-500' : 'border-slate-100'}`}
                       placeholder="e.g. Bole Sub-City, Addis Ababa"
                     />
+                    {errors.headquarters && <p className="text-red-500 text-[10px] font-bold mt-2 uppercase tracking-widest">{errors.headquarters}</p>}
                   </div>
                 </div>
               </div>
