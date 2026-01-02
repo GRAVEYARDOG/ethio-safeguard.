@@ -78,14 +78,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }
               <UI_ICONS.User className="w-6 h-6" />
               Verification Queue
             </button>
-            <button className="w-full flex items-center gap-5 px-6 py-5 text-slate-400 hover:bg-slate-900 rounded-3xl transition-all hover:text-white group font-bold text-sm">
-              <UI_ICONS.Truck className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-              Real-time Fleet
-            </button>
-            <button className="w-full flex items-center gap-5 px-6 py-5 text-slate-400 hover:bg-slate-900 rounded-3xl transition-all hover:text-white font-bold text-sm">
-              <UI_ICONS.Settings className="w-6 h-6" />
-              Network Safety
-            </button>
           </nav>
           <div className="p-8 border-t border-white/5">
             <div className="mb-8 p-6 bg-slate-900/50 rounded-[2rem] border border-white/5">
