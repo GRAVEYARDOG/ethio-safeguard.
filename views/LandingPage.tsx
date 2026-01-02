@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ICONS, APP_NAME } from '../constants';
 import { UserRole } from '../types';
 import { Footer } from '../components/Footer';
+import { store } from '../store';
 
 interface LandingPageProps {
   onStartRegister: () => void;
@@ -10,6 +10,11 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onStartLogin }) => {
+  const [driverCount, setDriverCount] = useState(0);
+
+  useEffect(() => {
+    store.fetchStats().then(data => setDriverCount(data.driverCount));
+  }, []);
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navigation */}
@@ -184,7 +189,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
                         <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-indigo-600 shadow-xl" alt="Driver" />
                       ))}
                     </div>
-                    <span className="text-xs font-black uppercase tracking-widest text-white">4,200+ Drivers Active</span>
+                    <span className="text-xs font-black uppercase tracking-widest text-white">
+                      {driverCount > 0 ? `${driverCount.toLocaleString()}+` : 'Joining'} Drivers Active
+                    </span>
                   </div>
                 </div>
               </div>

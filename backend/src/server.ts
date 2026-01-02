@@ -143,6 +143,16 @@ app.put('/api/users/:id/status', async (req, res) => {
     }
 });
 
+// Stats (Public)
+app.get('/api/stats', async (req, res) => {
+    try {
+        const driverCount = await User.countDocuments({ role: 'DRIVER', status: 'APPROVED' });
+        res.json({ driverCount });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to retrieve stats.' });
+    }
+});
+
 // Update Truck Status
 app.put('/api/users/:id/truck-status', async (req, res) => {
     try {

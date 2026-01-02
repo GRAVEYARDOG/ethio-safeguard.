@@ -26,6 +26,17 @@ export const store = {
     } catch (e) { console.error(e); return []; }
   },
 
+  fetchStats: async (): Promise<{ driverCount: number }> => {
+    try {
+      const res = await fetch(`${API_URL}/stats`);
+      if (!res.ok) throw new Error('Failed to fetch stats');
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+      return { driverCount: 0 };
+    }
+  },
+
   registerUser: async (user: any): Promise<User> => {
     const res = await fetch(`${API_URL}/register`, {
       method: 'POST',
