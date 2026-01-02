@@ -21,18 +21,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
           <span className="text-2xl font-extrabold tracking-tight text-slate-900">{APP_NAME}</span>
         </div>
         <div className="hidden lg:flex items-center gap-10">
-          <a href="#impact" className="text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Impact</a>
           <a href="#network" className="text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Network</a>
           <a href="#security" className="text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">Security</a>
         </div>
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => onStartLogin('ADMIN')}
             className="hidden sm:block text-slate-500 hover:text-indigo-600 font-bold text-sm transition-colors mr-4"
           >
             Admin
           </button>
-          <button 
+          <button
             onClick={onStartRegister}
             className="bg-indigo-600 text-white px-8 py-3 rounded-2xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 hover:shadow-indigo-200 active:scale-95"
           >
@@ -54,21 +53,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
                 Global Logistics Backbone
               </div>
               <h1 className="text-6xl md:text-8xl font-extrabold text-slate-900 leading-[1.05] mb-10 tracking-tighter">
-                Transparency <br/>
+                Transparency <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-500">Saves Lives.</span>
               </h1>
               <p className="text-2xl text-slate-500 mb-14 leading-relaxed max-w-xl font-medium">
                 The most advanced tracking infrastructure for humanitarian aid. Connecting donors, senders, and drivers in one secure, live ecosystem.
               </p>
               <div className="flex flex-col sm:flex-row gap-6">
-                <button 
+                <button
                   onClick={() => onStartLogin('DRIVER')}
                   className="group flex items-center justify-center gap-4 bg-slate-900 text-white px-12 py-6 rounded-3xl font-bold hover:bg-slate-800 transition-all shadow-2xl hover:-translate-y-1"
                 >
                   <ICONS.Truck className="w-6 h-6 text-indigo-400 group-hover:rotate-6 transition-transform" />
                   Driver Portal
                 </button>
-                <button 
+                <button
                   onClick={() => onStartLogin('SENDER')}
                   className="flex items-center justify-center gap-4 bg-white text-slate-900 border-2 border-slate-100 px-12 py-6 rounded-3xl font-bold hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-xl shadow-slate-200/50 hover:-translate-y-1"
                 >
@@ -92,9 +91,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
                 {/* Hero Dashboard Image - Ensuring Visibility with a reliable source */}
                 <div className="relative glass-card p-3 rounded-[3rem] premium-shadow overflow-hidden transform group-hover:rotate-y-1 transition-transform duration-700 bg-white/40">
                   <div className="relative rounded-[2.2rem] overflow-hidden bg-slate-200 min-h-[500px]">
-                    <img 
-                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200" 
-                      alt="Tracking Command Dashboard" 
+                    <img
+                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
+                      alt="Tracking Command Dashboard"
                       className="w-full object-cover h-[600px] shadow-2xl brightness-95 group-hover:brightness-100 transition-all duration-500 block relative z-10"
                     />
                     {/* Live Data Overlays */}
@@ -110,13 +109,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
 
                   {/* Floating Stats */}
                   <div className="absolute top-16 left-10 p-6 glass-card rounded-3xl shadow-2xl animate-float border border-white/40 z-30">
-                     <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1">Fleet Utilization</p>
-                     <p className="text-4xl font-black text-slate-900 tracking-tight">94.2%</p>
+                    <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1">Fleet Utilization</p>
+                    <p className="text-4xl font-black text-slate-900 tracking-tight">94.2%</p>
                   </div>
-                  
+
                   <div className="absolute bottom-12 right-10 p-6 glass-card rounded-3xl shadow-2xl animate-float border border-white/40 z-30" style={{ animationDelay: '1.5s' }}>
-                     <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1">Response Latency</p>
-                     <p className="text-4xl font-black text-slate-900 tracking-tight">1.8s</p>
+                    <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1">Response Latency</p>
+                    <p className="text-4xl font-black text-slate-900 tracking-tight">1.8s</p>
                   </div>
                 </div>
               </div>
@@ -124,38 +123,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
           </div>
         </section>
 
-        {/* Impact Section */}
-        <section id="impact" className="py-24 px-8 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto">
-            <div className="glass-card bg-slate-900 rounded-[4rem] p-16 md:p-24 shadow-3xl border border-white/10 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] -mr-48 -mt-48 transition-all duration-1000 group-hover:bg-indigo-600/20"></div>
-              <div className="relative z-10 grid lg:grid-cols-2 gap-20 items-center">
-                <div>
-                   <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter">Humanitarian <br/><span className="text-indigo-400">Impact Metrics</span></h2>
-                   <p className="text-xl text-slate-400 font-medium leading-relaxed mb-12">
-                     Our infrastructure is measured by the lives it touches and the speed at which aid arrives. We provide the transparency donors demand.
-                   </p>
-                   <button className="px-10 py-5 bg-white text-slate-950 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-50 transition-all shadow-2xl active:scale-95">
-                     Full Sustainability Report
-                   </button>
-                </div>
-                <div className="grid grid-cols-2 gap-8">
-                  {[
-                    { val: "100%", label: "Visibility", color: "to-indigo-400" },
-                    { val: "30s", label: "GPS Polling", color: "to-blue-400" },
-                    { val: "24/7", label: "Support Hub", color: "to-emerald-400" },
-                    { val: "0%", label: "Lost Units", color: "to-red-400" }
-                  ].map((stat, i) => (
-                    <div key={i} className="glass-card bg-white/5 border-white/5 p-10 rounded-[2.5rem] hover:bg-white/10 transition-all group/stat">
-                      <p className={`text-5xl font-black mb-2 tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white ${stat.color} group-hover/stat:scale-110 transition-transform`}>{stat.val}</p>
-                      <p className="text-xs font-black uppercase tracking-[0.2em] text-indigo-400">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Security Section */}
         <section id="security" className="py-24 px-8 relative">
@@ -197,30 +164,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartRegister, onSta
           <div className="max-w-7xl mx-auto">
             <div className="glass-card bg-indigo-600 rounded-[4rem] p-16 md:p-24 shadow-3xl relative overflow-hidden group">
               <div className="absolute inset-0 opacity-15 pointer-events-none scale-110 group-hover:scale-100 transition-transform duration-[10s]">
-                 <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale invert" alt="Map" />
+                <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale invert" alt="Map" />
               </div>
               <div className="relative z-10 text-center max-w-4xl mx-auto text-white">
                 <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.4em] mb-12">
-                   Global Deployment Network
+                  Global Deployment Network
                 </div>
-                <h2 className="text-5xl md:text-7xl font-black mb-10 tracking-tighter leading-tight">Join the Humanitarian <br/><span className="text-indigo-200">Logistics Backbone.</span></h2>
+                <h2 className="text-5xl md:text-7xl font-black mb-10 tracking-tighter leading-tight">Join the Humanitarian <br /><span className="text-indigo-200">Logistics Backbone.</span></h2>
                 <p className="text-xl md:text-2xl text-indigo-100 mb-16 font-medium leading-relaxed max-w-2xl mx-auto">
                   Whether you're a driver with a single Isuzu or an international agency, EthioSafeguard is your home for secure delivery.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-                  <button 
+                  <button
                     onClick={onStartRegister}
                     className="bg-white text-indigo-600 px-12 py-6 rounded-[2.5rem] font-black text-xl hover:bg-indigo-50 transition-all shadow-2xl active:scale-95 hover:-translate-y-1"
                   >
                     Register Organization
                   </button>
                   <div className="flex items-center gap-4 text-indigo-200 font-bold bg-white/5 backdrop-blur-md px-6 py-4 rounded-3xl border border-white/10">
-                     <div className="flex -space-x-3">
-                        {[1,2,3,4].map(i => (
-                          <img key={i} src={`https://i.pravatar.cc/100?img=${i+20}`} className="w-10 h-10 rounded-full border-2 border-indigo-600 shadow-xl" alt="Driver" />
-                        ))}
-                     </div>
-                     <span className="text-xs font-black uppercase tracking-widest text-white">4,200+ Drivers Active</span>
+                    <div className="flex -space-x-3">
+                      {[1, 2, 3, 4].map(i => (
+                        <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-indigo-600 shadow-xl" alt="Driver" />
+                      ))}
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-widest text-white">4,200+ Drivers Active</span>
                   </div>
                 </div>
               </div>
