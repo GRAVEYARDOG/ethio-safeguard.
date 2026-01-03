@@ -5,6 +5,7 @@ import { store } from '../store';
 import { ICONS as UI_ICONS, APP_NAME } from '../constants';
 import { Footer } from '../components/Footer';
 import { socket } from '../socket';
+import { ChatWindow } from '../components/ChatWindow';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -45,6 +46,7 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({ user, onLogout
   const [selectedTruck, setSelectedTruck] = useState<User | null>(null);
   const [activeRequests, setActiveRequests] = useState<AidRequest[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     aidType: '',
@@ -398,7 +400,15 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({ user, onLogout
                         </p>
                       </div>
                     </div>
-                    <div className="mt-8 xl:mt-0">
+                    <div className="mt-8 xl:mt-0 flex gap-4">
+                      {req.status === RequestStatus.ACCEPTED && (
+                        <button
+                          onClick={() => setActiveChatId(req.id)}
+                          className="p-5 bg-white text-indigo-600 rounded-2xl border border-indigo-100 hover:bg-indigo-50 transition-all flex items-center justify-center shadow-lg hover:shadow-indigo-500/10 active:scale-95 group/chat"
+                        >
+                          <UI_ICONS.Bell className="w-6 h-6 group-hover/chat:animate-bounce" />
+                        </button>
+                      )}
                       <div className={`flex items-center justify-center gap-4 px-12 py-6 rounded-[2rem] font-black text-sm uppercase tracking-[0.3em] border ${req.status === RequestStatus.COMPLETED
                         ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
                         : req.status === RequestStatus.ACCEPTED
@@ -417,6 +427,17 @@ export const SenderDashboard: React.FC<SenderDashboardProps> = ({ user, onLogout
       </main>
 
       <Footer />
+
+      {/* Floating Chat Window */}
+      {activeChatId && (
+        <div className="fixed bottom-10 right-10 z-[60] shadow-4xl transform scale-110 origin-bottom-right">
+          <ChatWindow
+            requestId={activeChatId}
+            currentUser={user}
+            onClose={() => setActiveChatId(null)}
+          />
+        </div>
+      )}
 
       {/* Modern High-End Aid Form Modal */}
       {showForm && selectedTruck && (

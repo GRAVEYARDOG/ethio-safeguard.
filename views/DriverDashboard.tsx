@@ -5,6 +5,7 @@ import { store } from '../store';
 import { ICONS as UI_ICONS, APP_NAME } from '../constants';
 import { Footer } from '../components/Footer';
 import { socket } from '../socket';
+import { ChatWindow } from '../components/ChatWindow';
 
 
 interface DriverDashboardProps {
@@ -19,6 +20,7 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
   const [pendingRequests, setPendingRequests] = useState<AidRequest[]>([]);
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   // DEBUG STATE
   const [lastDebugEvent, setLastDebugEvent] = useState<string>("Waiting for events...");
@@ -333,10 +335,17 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
                     <UI_ICONS.Map className="w-5 h-5 text-blue-500" />
                     Delivering to {activeRequest.destination}
                   </p>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-4 mb-4">
                     <button onClick={reportMilestone} className="py-5 bg-white text-slate-900 rounded-2xl font-black hover:bg-blue-50 transition-all shadow-lg active:scale-95">Report Milestone</button>
                     <button onClick={handleComplete} className="py-5 bg-white/10 text-white rounded-2xl font-black hover:bg-white/20 transition-all border border-white/10 active:scale-95">Mark Completed</button>
                   </div>
+                  <button
+                    onClick={() => setShowChat(true)}
+                    className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-3 group"
+                  >
+                    <UI_ICONS.Bell className="w-6 h-6 group-hover:animate-bounce" />
+                    Open Mission Radio
+                  </button>
                 </div>
               </div>
             ) : (
@@ -432,6 +441,17 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
       </main>
 
       <Footer />
+
+      {/* Floating Chat Window */}
+      {showChat && activeRequest && (
+        <div className="fixed bottom-10 right-10 z-[60] shadow-4xl transform scale-110 origin-bottom-right">
+          <ChatWindow
+            requestId={activeRequest.id}
+            currentUser={user}
+            onClose={() => setShowChat(false)}
+          />
+        </div>
+      )}
       {/* VISUAL DEBUGGER */}
       <div className="fixed bottom-4 right-4 bg-black/80 text-green-400 p-4 rounded-xl font-mono text-xs z-50 pointer-events-none">
         <p className="font-bold border-b border-green-400/30 mb-2">DEBUG CONSOLE</p>

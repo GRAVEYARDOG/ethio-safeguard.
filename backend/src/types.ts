@@ -67,3 +67,13 @@ export interface Notification {
     createdAt: number;
     requestId?: string;
 }
+
+export interface ChatMessage {
+    id: string;
+    requestId: string;
+    senderId: string;
+    senderName: string;
+    text: string;
+    role: UserRole;
+    createdAt: number;
+}

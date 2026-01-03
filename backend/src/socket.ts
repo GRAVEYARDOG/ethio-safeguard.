@@ -20,6 +20,12 @@ export const setupSocket = (io: Server) => {
         io.emit('mission-debug', { msg: 'Global Broadcast (From Redis)', target: mission.driverId });
     });
 
+    // Subscribe to mission-chat for cross-instance messaging
+    redisSubscriber.subscribe('mission-chat', (message) => {
+        const chat = JSON.parse(message);
+        io.to(`chat-${chat.requestId}`).emit('receive-message', chat);
+    });
+
     io.on('connection', (socket: Socket) => {
         console.log('Client connected:', socket.id);
 
@@ -90,6 +96,28 @@ export const setupSocket = (io: Server) => {
                 await redisClient.publish('mission-assignment', JSON.stringify(mission));
             } catch (err) {
                 console.error('Redis publish error (ignoring):', err);
+            }
+        });
+
+        // Chat Handlers
+        socket.on('join-mission-chat', (requestId: string) => {
+            const roomName = `chat-${requestId}`;
+            socket.join(roomName);
+            console.log(`Socket ${socket.id} joined mission chat room: ${roomName}`);
+        });
+
+        socket.on('send-message', async (message: any) => {
+            console.log('Received message:', message);
+            const roomName = `chat-${message.requestId}`;
+
+            // 1. Direct local broadcast
+            io.to(roomName).emit('receive-message', message);
+
+            // 2. Redis broadcast for other instances
+            try {
+                await redisClient.publish('mission-chat', JSON.stringify(message));
+            } catch (err) {
+                console.error('Redis chat publish error:', err);
             }
         });
 
