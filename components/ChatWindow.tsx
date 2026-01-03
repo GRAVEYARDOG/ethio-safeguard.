@@ -19,10 +19,44 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ requestId, currentUser, 
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Load messages from localStorage on mount
     useEffect(() => {
-        socket.emit('join-mission-chat', requestId);
+        const storageKey = `chat-${requestId}`;
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                setMessages(parsed);
+            } catch (e) {
+                console.error('Failed to parse stored messages:', e);
+            }
+        }
+    }, [requestId]);
+
+    // Save messages to localStorage whenever they change
+    useEffect(() => {
+        if (messages.length > 0) {
+            const storageKey = `chat-${requestId}`;
+            localStorage.setItem(storageKey, JSON.stringify(messages));
+        }
+    }, [messages, requestId]);
+
+    useEffect(() => {
+        // Ensure socket is connected before joining room
+        const joinRoom = () => {
+            console.log(`Joining chat room: chat-${requestId}`);
+            socket.emit('join-mission-chat', requestId);
+        };
+
+        if (socket.connected) {
+            joinRoom();
+        } else {
+            socket.connect();
+            socket.once('connect', joinRoom);
+        }
 
         const onMessageReceived = (message: ChatMessage) => {
+            console.log('Received message:', message);
             if (message.requestId === requestId) {
                 setMessages(prev => {
                     // Prevent duplicates
@@ -57,6 +91,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ requestId, currentUser, 
             createdAt: Date.now()
         };
 
+        console.log('Sending message:', newMessage);
         setMessages(prev => [...prev, newMessage]);
         socket.emit('send-message', newMessage);
         setInputText('');
@@ -72,7 +107,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ requestId, currentUser, 
                     </div>
                     <div>
                         <h4 className="font-black text-sm tracking-tight">Mission Radio</h4>
-                        <p className="text-[9px] text-indigo-400 font-black uppercase tracking-widest">Encrypted Link Active</p>
+                        <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${socket.connected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
+                            <p className="text-[9px] text-indigo-400 font-black uppercase tracking-widest">
+                                {socket.connected ? 'Link Active' : 'Reconnecting...'}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 {onClose && (
@@ -98,8 +138,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ requestId, currentUser, 
                             className={`flex flex-col ${msg.senderId === currentUser.id ? 'items-end' : 'items-start'}`}
                         >
                             <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-medium shadow-sm ${msg.senderId === currentUser.id
-                                    ? 'bg-indigo-600 text-white rounded-tr-none'
-                                    : 'bg-white text-slate-900 border border-slate-100 rounded-tl-none'
+                                ? 'bg-indigo-600 text-white rounded-tr-none'
+                                : 'bg-white text-slate-900 border border-slate-100 rounded-tl-none'
                                 }`}>
                                 {msg.text}
                             </div>
