@@ -264,17 +264,17 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="glass-panel border-b px-8 py-5 flex justify-between items-center sticky top-0 z-40">
-        <div className="flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200">
-            <UI_ICONS.Truck className="w-6 h-6" />
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <header className="glass-panel border-b px-4 md:px-8 py-4 md:py-5 flex justify-between items-center sticky top-0 z-40">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="bg-blue-600 p-1.5 md:p-2 rounded-xl text-white shadow-lg shadow-blue-200">
+            <UI_ICONS.Truck className="w-5 h-5 md:w-6 md:h-6" />
           </div>
-          <span className="font-black text-xl tracking-tighter text-slate-800">{APP_NAME} Driver</span>
+          <span className="font-black text-base md:text-xl tracking-tighter text-slate-800">{APP_NAME} Driver</span>
         </div>
-        <div className="flex items-center gap-6">
-          {/* DEBUG INDICATOR */}
-          <div className="flex flex-col items-end text-[9px] font-mono text-slate-400">
+        <div className="flex items-center gap-3 md:gap-6">
+          {/* DEBUG INDICATOR - Hidden on mobile */}
+          <div className="hidden lg:flex flex-col items-end text-[9px] font-mono text-slate-400">
             <span className={socket.connected ? "text-green-500" : "text-red-500"}>
               {socket.connected ? "SOCKET CONNECTED" : "SOCKET DISCONNECTED"}
             </span>
@@ -284,18 +284,18 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
             {lastUpdate && <span className="text-blue-400">LAST: {lastUpdate}</span>}
           </div>
 
-          <div className="flex items-center gap-3 bg-white border border-slate-200 px-5 py-2.5 rounded-2xl shadow-sm">
-            <div className={`w-3 h-3 rounded-full ${status === TruckStatus.READY ? 'bg-green-500 animate-pulse' : status === TruckStatus.BUSY ? 'bg-amber-500' : 'bg-slate-300'}`}></div>
-            <span className="text-[10px] font-black text-slate-700 uppercase tracking-widest">{status}</span>
+          <div className="flex items-center gap-2 md:gap-3 bg-white border border-slate-200 px-3 md:px-5 py-1.5 md:py-2.5 rounded-2xl shadow-sm">
+            <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${status === TruckStatus.READY ? 'bg-green-500 animate-pulse' : status === TruckStatus.BUSY ? 'bg-amber-500' : 'bg-slate-300'}`}></div>
+            <span className="text-[9px] md:text-[10px] font-black text-slate-700 uppercase tracking-widest">{status}</span>
           </div>
-          <div className="h-8 w-px bg-slate-200 mx-2"></div>
-          <button onClick={onLogout} className="text-slate-400 hover:text-red-600 transition-all p-2 rounded-lg hover:bg-red-50">
-            <UI_ICONS.LogOut className="w-6 h-6" />
+          <div className="hidden md:block h-8 w-px bg-slate-200 mx-2"></div>
+          <button onClick={onLogout} className="text-slate-400 hover:text-red-600 transition-all p-1.5 md:p-2 rounded-lg hover:bg-red-50">
+            <UI_ICONS.LogOut className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto w-full p-8 md:p-12 flex-grow animate-fade-in">
+      <main className="max-w-6xl mx-auto w-full p-4 md:p-8 lg:p-12 flex-grow">
         <div className="grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8 space-y-10">
             {/* Status Section */}

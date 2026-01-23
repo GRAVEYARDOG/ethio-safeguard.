@@ -50,8 +50,8 @@ export const RegistrationPage: React.FC<RegistrationPageProps> = ({ onBack, onCo
 
     if (!nameRegex.test(nameTrimmed)) {
       newErrors.name = 'Numbers and special characters are not allowed in names.';
-    } else if (nameWords.length < 2 || nameWords.length > 4) {
-      newErrors.name = 'Name must be between 2 and 4 words.';
+    } else if (nameWords.length < 2 || nameWords.length > 27) {
+      newErrors.name = 'Name must be between 2 and 27 words.';
     } else if (commonData.name !== nameTrimmed) {
       newErrors.name = 'Multiple spaces are not allowed.';
     }
