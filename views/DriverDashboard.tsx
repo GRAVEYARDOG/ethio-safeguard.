@@ -5,7 +5,7 @@ import { store } from '../store';
 import { ICONS as UI_ICONS, APP_NAME } from '../constants';
 import { Footer } from '../components/Footer';
 import { socket } from '../socket';
-import { ChatWindow } from '../components/ChatWindow';
+
 
 
 interface DriverDashboardProps {
@@ -20,10 +20,7 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
   const [pendingRequests, setPendingRequests] = useState<AidRequest[]>([]);
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string | null>(null);
-  const [showChat, setShowChat] = useState(false);
 
-  // DEBUG STATE
-  const [lastDebugEvent, setLastDebugEvent] = useState<string>("Waiting for events...");
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -131,7 +128,7 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
     }
 
     socket.on('mission-assigned', (newRequest: AidRequest) => {
-      setLastDebugEvent(`Rx: ${newRequest.aidType} for ${newRequest.driverId}`);
+
       console.log('socket event "mission-assigned" received!');
       console.log('payload:', newRequest);
       console.log('Current user.id:', user.id);
@@ -168,10 +165,7 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
       }
     });
 
-    socket.on('mission-debug', (data: any) => {
-      console.log('DEBUG: Received global packet', data);
-      setLastDebugEvent(`DEBUG GLOBAL: ${data.target}`);
-    });
+
 
 
     return () => {
@@ -339,13 +333,7 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
                     <button onClick={reportMilestone} className="py-5 bg-white text-slate-900 rounded-2xl font-black hover:bg-blue-50 transition-all shadow-lg active:scale-95">Report Milestone</button>
                     <button onClick={handleComplete} className="py-5 bg-white/10 text-white rounded-2xl font-black hover:bg-white/20 transition-all border border-white/10 active:scale-95">Mark Completed</button>
                   </div>
-                  <button
-                    onClick={() => setShowChat(true)}
-                    className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 active:scale-95 flex items-center justify-center gap-3 group"
-                  >
-                    <UI_ICONS.Bell className="w-6 h-6 group-hover:animate-bounce" />
-                    Open Mission Radio
-                  </button>
+
                 </div>
               </div>
             ) : (
@@ -442,47 +430,8 @@ export const DriverDashboard: React.FC<DriverDashboardProps> = ({ user, onLogout
 
       <Footer />
 
-      {/* Floating Chat Window */}
-      {showChat && activeRequest && (
-        <div className="fixed bottom-10 right-10 z-[60] shadow-4xl transform scale-110 origin-bottom-right">
-          <ChatWindow
-            requestId={activeRequest.id}
-            currentUser={user}
-            onClose={() => setShowChat(false)}
-          />
-        </div>
-      )}
-      {/* VISUAL DEBUGGER */}
-      <div className="fixed bottom-4 right-4 bg-black/80 text-green-400 p-4 rounded-xl font-mono text-xs z-50 pointer-events-none">
-        <p className="font-bold border-b border-green-400/30 mb-2">DEBUG CONSOLE</p>
-        <p>User ID: {user.id}</p>
-        <p>Socket ID: {socket.id}</p>
-        <p>Status: {status}</p>
-        <p>Connection: {socket.connected ? "CONNECTED" : "DISCONNECTED"}</p>
-        <p>Last Event: {lastDebugEvent}</p>
-        <button
-          className="mt-2 bg-green-500/20 text-green-400 px-2 py-1 rounded w-full border border-green-500/30 pointer-events-auto hover:bg-green-500/40"
-          onClick={() => {
-            const mockMission: AidRequest = {
-              id: 'TEST-' + Math.random(),
-              driverId: user.id,
-              senderId: 'TEST-SENDER',
-              aidType: 'TEST MISSION',
-              quantity: '100',
-              destination: 'TEST LOC',
-              urgency: 'High',
-              status: RequestStatus.PENDING,
-              createdAt: Date.now()
-            };
-            // Manually trigger the listener logic by simulating the event handling
-            // We can't easily emit to ourself via socket.io-client without roundtrip
-            // So we'll just call the handler logic directly or emit on the local socket object
-            (socket as any).listeners('mission-assigned').forEach((fn: any) => fn(mockMission));
-          }}
-        >
-          Simulate Incoming Mission
-        </button>
-      </div>
+
+
     </div>
   );
 };
